@@ -1,0 +1,13 @@
+export(HCV)
+export(synthetic_data)
+export(getCluster)
+export(plotMap)
+export(tessellation_adjacency_matrix)
+import(sp)
+import(Matrix)
+importFrom("stats","cutree","cor","dist","cmdscale","as.dist","runif","hclust")
+importFrom("graphics","par","layout","axis")
+importFrom("grDevices","topo.colors")
+importFrom("BLSM","dst")
+
+
