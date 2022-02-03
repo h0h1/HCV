@@ -241,6 +241,7 @@ merge2order <- function (m)
 #' HCVobj <- HCV(pcase$geo,  pcase$feat)
 #smi <- getCluster(pcase$geo,pcase$feat,HCVobj,method="SMI")
 #' smi <- getCluster(HCVobj,method="SMI")
+#' oldpar <- par(no.readonly = TRUE)  
 #' par(mfrow=c(2,2))
 #' labcolor  <-  (pcase$labels+1)%%3+1
 #' plot(pcase$feat,  col  =  labcolor,  pch=19,  xlab  =  'First  attribute', 
@@ -251,6 +252,7 @@ merge2order <- function (m)
 #'   ylab  =  'Second  attribute',main  =  'Feature  domain')
 #' plot(pcase$geo,  col=factor(smi),pch=19,  xlab  =  'First  attribute', 
 #'   ylab  =  'Second  attribute',main  =  'Geometry  domain')
+#' par(oldpar)
 #'
 HCV <- function(geometry_domain, feature_domain,
                                 linkage='ward',  diss = 'none',
@@ -351,12 +353,14 @@ HCV <- function(geometry_domain, feature_domain,
 #' @examples
 #' set.seed(0)
 #' pcase <- synthetic_data(3,30,0.02,100,2,2)
+#' oldpar <- par(no.readonly = TRUE)  
 #' par(mfrow=c(1,2))
 #' labcolor <- (pcase$labels+1)%%3+1
 #' plot(pcase$feat, col = labcolor, pch=19, xlab = 'First attribute', 
 #'   ylab = 'Second attribute', main = 'Feature domain')
 #' plot(pcase$geo, col = labcolor, pch=19, xlab = 'First attribute', 
 #'   ylab = 'Second attribute', main = 'Geometry domain')
+#' par(oldpar)
 #' 
 synthetic_data <- function(k, f, r, n, feature, geometry, homogeneity = TRUE){
   geometry_domain <- matrix(0, ncol = geometry, nrow = n)
@@ -415,6 +419,8 @@ synthetic_data <- function(k, f, r, n, feature, geometry, homogeneity = TRUE){
 #'
 plotMap <- function(map, feat, color = topo.colors(10), main = "",
                     bar_title = "rank", zlim = NULL ) {
+  oldpar <- par(no.readonly = TRUE)  
+  on.exit(par(oldpar))   
   layout(t(1:2),widths = c(6,1))
   par(mar = c(4,4,1,0.5))
   nc <- length(color) 
@@ -524,11 +530,10 @@ FindComponents <- function(adj, label){
   components <- list()
   count <- 0
   for(j in 1:k){
-    invisible(utils::capture.output(
-      hclust <- HCV(adj[neighbor[[j]], neighbor[[j]]],
-                                    matrix(1,nrow=length(neighbor[[j]]))
-                                    , adjacency = T))
-    )
+    f <- matrix(1, nrow = length(neighbor[[j]]))
+    rownames(f) <- rownames(adj)[neighbor[[j]]]
+    invisible(utils::capture.output(hclust <- HCV(adj[neighbor[[j]], 
+       neighbor[[j]]], f, adjacency = T)))
 
     comp <- as.numeric(cutree(hclust, hclust$cut_for_connect))
 
@@ -586,6 +591,7 @@ affinityMat <- function(hclust, kernel = 'none', KNN = 7){
 #' @param Kmax integer for the upper bound of the potential number of clusters to be considered.
 #' @param niter integer for the number of resampling, only used in \code{method='M3C'}.
 #' @param criterion character indicating whether to use 'PAC' or 'entropy' as the objective function. Default is 'PAC'. Only used in \code{method='M3C'}. See the reference for details.
+#' @return  A vector giving the cluster ID assigned for each sample. 
 #' @export
 #' @seealso \code{\link{M3C}}
 #' @author ShengLi Tzeng and Hao-Yun Hsu.  
@@ -596,6 +602,7 @@ affinityMat <- function(hclust, kernel = 'none', KNN = 7){
 #' HCVobj <- HCV(pcase$geo,  pcase$feat)
 #smi=getCluster(pcase$geo,pcase$feat,HCVobj,method="SMI")
 #' smi <- getCluster(HCVobj,method="SMI")
+#' oldpar <- par(no.readonly = TRUE)  
 #' par(mfrow=c(2,2))
 #' labcolor  <-  (pcase$labels+1)%%3+1
 #' plot(pcase$feat,  col  =  labcolor,  pch=19,  xlab  =  'First  attribute', 
@@ -606,6 +613,7 @@ affinityMat <- function(hclust, kernel = 'none', KNN = 7){
 #'   ylab  =  'Second  attribute',main  =  'Feature  domain')
 #' plot(pcase$geo,  col=factor(smi),pch=19,  xlab  =  'First  attribute', 
 #'   ylab  =  'Second  attribute',main  =  'Geometry  domain')
+#' par(oldpar)
 #'
 getCluster <- function( HCVobj, method=c('SMI','M3C'), Kmax=10, niter=25, criterion='PAC'){
 # only M3C needs niter, criterion
