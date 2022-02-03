@@ -39,7 +39,7 @@ polys  <-  as(grd,  "SpatialPolygons")
 centroids  <-  coordinates(polys)
 gdomain  <-  SpatialPolygonsDataFrame(polys,  data=data.frame(x=centroids[,1],  
   y=centroids[,2], row.names=row.names(polys)))
-feat=gdomain$x*5+gdomain$y^2
+feat <- gdomain$x*5+gdomain$y^2
 plotMap(gdomain,feat)
 
 }
