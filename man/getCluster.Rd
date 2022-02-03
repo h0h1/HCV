@@ -15,7 +15,7 @@ getCluster(
 \arguments{
 \item{HCVobj}{an object resulting from calling the \code{HCV} function.}
 
-\item{method}{character indicating the method to determine an appropriate number of clusters. Default 'SMI' is faster, and 'M3C' is more precise but slower.}
+\item{method}{character indicating the method to determine an appropriate number of clusters. Default 'SMI' is faster, while 'M3C' is more precise but slower.}
 
 \item{Kmax}{integer for the upper bound of the potential number of clusters to be considered.}
 
@@ -23,28 +23,29 @@ getCluster(
 
 \item{criterion}{character indicating whether to use 'PAC' or 'entropy' as the objective function. Default is 'PAC'. Only used in \code{method='M3C'}. See the reference for details.}
 }
+\value{
+A vector giving the cluster ID assigned for each sample.
+}
 \description{
 The funciton provides two methods to determine an  appropriate number of clusters for an \code{HCV} object, and reports individual cluster members. One of the method is a novel internal index named Spatial Mixture Index (SMI), considering both the within-cluster sum of squared difference of geographical attributes and non-geographical attributes. The other is an M3C-based method taking account of the stability of clusters.
 }
 \examples{
 set.seed(0)
 pcase  <-  synthetic_data(3,30,0.02,100,2,2)
-HCVobj=HCV(pcase$geo,  pcase$feat)
-smi=getCluster(HCVobj,method="SMI")
+HCVobj <- HCV(pcase$geo,  pcase$feat)
+smi <- getCluster(HCVobj,method="SMI")
+oldpar <- par(no.readonly = TRUE)  
 par(mfrow=c(2,2))
 labcolor  <-  (pcase$labels+1)\%\%3+1
 plot(pcase$feat,  col  =  labcolor,  pch=19,  xlab  =  'First  attribute', 
-
   ylab  =  'Second  attribute',  main  =  'Feature  domain')
 plot(pcase$geo,  col  =  labcolor,  pch=19,  xlab  =  'First  attribute', 
-
   ylab  =  'Second  attribute',  main  =  'Geometry  domain')
 plot(pcase$feat,  col=factor(smi),pch=19,  xlab  =  'First  attribute', 
-
   ylab  =  'Second  attribute',main  =  'Feature  domain')
 plot(pcase$geo,  col=factor(smi),pch=19,  xlab  =  'First  attribute', 
-
   ylab  =  'Second  attribute',main  =  'Geometry  domain')
+par(oldpar)
 
 }
 \references{
