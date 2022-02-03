@@ -39,7 +39,8 @@ This function implements the hierarchical clustering for spatial data. It modifi
 set.seed(0)
 pcase <- synthetic_data(3,30,0.02,100,2,2)
 HCVobj <- HCV(pcase$geo,  pcase$feat)
-smi=getCluster(HCVobj,method="SMI")
+smi <- getCluster(HCVobj,method="SMI")
+oldpar <- par(no.readonly = TRUE)  
 par(mfrow=c(2,2))
 labcolor  <-  (pcase$labels+1)\%\%3+1
 plot(pcase$feat,  col  =  labcolor,  pch=19,  xlab  =  'First  attribute', 
@@ -50,6 +51,7 @@ plot(pcase$feat,  col=factor(smi),pch=19,  xlab  =  'First  attribute',
   ylab  =  'Second  attribute',main  =  'Feature  domain')
 plot(pcase$geo,  col=factor(smi),pch=19,  xlab  =  'First  attribute', 
   ylab  =  'Second  attribute',main  =  'Geometry  domain')
+par(oldpar)
 
 }
 \references{
