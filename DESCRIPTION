@@ -11,7 +11,7 @@ Description: Hierarchical clustering for spatial data, which requires clustering
     In addition, methods to find an appropriate number of clusters and to report 
     cluster members are also provided.
 Version: 1.2.0
-Date: 2022-01-24
+Date: 2022-01-31
 Depends: 
     R (>= 4.0.0)
 Imports:  
@@ -23,6 +23,6 @@ Authors@R: c(person("ShengLi", "Tzeng", email = "slt.cmu@gmail.com", role=c("cre
 Maintainer: ShengLi Tzeng <slt.cmu@gmail.com>
 NeedsCompilation: no
 License: LGPL-3
-Date/Publication: 2022-01-24 13:07:54
+Date/Publication: 2022-01-31 06:07:54
 Encoding: UTF-8
 RoxygenNote: 7.1.1
